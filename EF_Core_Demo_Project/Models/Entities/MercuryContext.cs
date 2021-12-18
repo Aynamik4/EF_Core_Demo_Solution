@@ -18,17 +18,15 @@ namespace EF_Core_Demo_Project.Models.Entities
         }
 
         public virtual DbSet<Address> Addresses { get; set; }
-        public virtual DbSet<Adressbok> Adressboks { get; set; }
-        public virtual DbSet<Fruit> Fruits { get; set; }
-        public virtual DbSet<HistoricalPrice> HistoricalPrices { get; set; }
         public virtual DbSet<Kontaktuppgifter> Kontaktuppgifters { get; set; }
         public virtual DbSet<P2a> P2as { get; set; }
         public virtual DbSet<Person> Persons { get; set; }
-        public virtual DbSet<Person1> Persons1 { get; set; }
         public virtual DbSet<Personal> Personals { get; set; }
-        public virtual DbSet<Product> Products { get; set; }
-        public virtual DbSet<Select> Selects { get; set; }
+        public virtual DbSet<Personal1> Personals1 { get; set; }
+        public virtual DbSet<Sektion1> Sektion1s { get; set; }
+        public virtual DbSet<Sektion2> Sektion2s { get; set; }
         public virtual DbSet<StrangeTable> StrangeTables { get; set; }
+        public virtual DbSet<TestTabell> TestTabells { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -43,7 +41,7 @@ namespace EF_Core_Demo_Project.Models.Entities
         {
             modelBuilder.Entity<Address>(entity =>
             {
-                entity.HasIndex(e => new { e.Street, e.City, e.ZipCode }, "UQ__Addresse__8F22AFF0E25A98B9")
+                entity.HasIndex(e => new { e.Street, e.City, e.ZipCode }, "UQ__Addresse__8F22AFF071FDAD2D")
                     .IsUnique();
 
                 entity.Property(e => e.Id).HasColumnName("ID");
@@ -65,94 +63,11 @@ namespace EF_Core_Demo_Project.Models.Entities
                     .IsUnicode(false);
             });
 
-            modelBuilder.Entity<Adressbok>(entity =>
-            {
-                entity.HasNoKey();
-
-                entity.ToView("Adressbok");
-
-                entity.Property(e => e.Efternamn)
-                    .HasMaxLength(32)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.Förnamn)
-                    .HasMaxLength(32)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.Gata)
-                    .IsRequired()
-                    .HasMaxLength(32)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.Kontakttyp)
-                    .IsRequired()
-                    .HasMaxLength(8)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.Kontaktuppgift)
-                    .IsRequired()
-                    .HasMaxLength(32)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.Ort)
-                    .IsRequired()
-                    .HasMaxLength(32)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.Personnr)
-                    .IsRequired()
-                    .HasMaxLength(13)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.Postnr)
-                    .HasMaxLength(16)
-                    .IsUnicode(false);
-            });
-
-            modelBuilder.Entity<Fruit>(entity =>
-            {
-                entity.HasIndex(e => new { e.FruitType, e.FruitName }, "UQ__Fruits__FE7D1CBD5525D6FE")
-                    .IsUnique();
-
-                entity.Property(e => e.Id).HasColumnName("ID");
-
-                entity.Property(e => e.FruitName)
-                    .IsRequired()
-                    .HasMaxLength(32)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.FruitType)
-                    .IsRequired()
-                    .HasMaxLength(32)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.PricePerKg).HasColumnType("money");
-            });
-
-            modelBuilder.Entity<HistoricalPrice>(entity =>
-            {
-                entity.Property(e => e.Id).HasColumnName("ID");
-
-                entity.Property(e => e.ChangeDate).HasColumnType("datetime");
-
-                entity.Property(e => e.NewPrice).HasColumnType("money");
-
-                entity.Property(e => e.OldPrice).HasColumnType("money");
-
-                entity.Property(e => e.ProductsId).HasColumnName("ProductsID");
-
-                entity.HasOne(d => d.Products)
-                    .WithMany(p => p.HistoricalPrices)
-                    .HasForeignKey(d => d.ProductsId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Historica__Produ__2B0A656D");
-            });
-
             modelBuilder.Entity<Kontaktuppgifter>(entity =>
             {
                 entity.ToTable("Kontaktuppgifter");
 
-                entity.HasIndex(e => e.Kontaktuppgift, "UQ__Kontaktu__E23393663D36DCA4")
+                entity.HasIndex(e => e.Kontaktuppgift, "UQ__Kontaktu__E2339366B478945E")
                     .IsUnique();
 
                 entity.Property(e => e.Id).HasColumnName("ID");
@@ -172,14 +87,14 @@ namespace EF_Core_Demo_Project.Models.Entities
                 entity.HasOne(d => d.Persons)
                     .WithMany(p => p.Kontaktuppgifters)
                     .HasForeignKey(d => d.PersonsId)
-                    .HasConstraintName("FK__Kontaktup__Perso__60A75C0F");
+                    .HasConstraintName("FK__Kontaktup__Perso__5165187F");
             });
 
             modelBuilder.Entity<P2a>(entity =>
             {
                 entity.ToTable("P2A");
 
-                entity.HasIndex(e => new { e.PersonsId, e.AddressesId }, "UQ__P2A__215206A3BABC7E1E")
+                entity.HasIndex(e => new { e.PersonsId, e.AddressesId }, "UQ__P2A__215206A3FD5450CA")
                     .IsUnique();
 
                 entity.Property(e => e.Id).HasColumnName("ID");
@@ -192,18 +107,18 @@ namespace EF_Core_Demo_Project.Models.Entities
                     .WithMany(p => p.P2as)
                     .HasForeignKey(d => d.AddressesId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__P2A__AddressesID__71D1E811");
+                    .HasConstraintName("FK__P2A__AddressesID__5DCAEF64");
 
                 entity.HasOne(d => d.Persons)
                     .WithMany(p => p.P2as)
                     .HasForeignKey(d => d.PersonsId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__P2A__PersonsID__70DDC3D8");
+                    .HasConstraintName("FK__P2A__PersonsID__5CD6CB2B");
             });
 
             modelBuilder.Entity<Person>(entity =>
             {
-                entity.HasIndex(e => e.Personnr, "UQ__Persons__AA2D17265EF7815E")
+                entity.HasIndex(e => e.Personnr, "UQ__Persons__AA2D1726378364F1")
                     .IsUnique();
 
                 entity.Property(e => e.Id).HasColumnName("ID");
@@ -219,17 +134,6 @@ namespace EF_Core_Demo_Project.Models.Entities
                 entity.Property(e => e.Personnr)
                     .IsRequired()
                     .HasMaxLength(13)
-                    .IsUnicode(false);
-            });
-
-            modelBuilder.Entity<Person1>(entity =>
-            {
-                entity.ToTable("Persons", "HR");
-
-                entity.Property(e => e.Id).HasColumnName("ID");
-
-                entity.Property(e => e.SomeValue)
-                    .HasMaxLength(32)
                     .IsUnicode(false);
             });
 
@@ -257,28 +161,54 @@ namespace EF_Core_Demo_Project.Models.Entities
                 entity.HasOne(d => d.Chefs)
                     .WithMany(p => p.InverseChefs)
                     .HasForeignKey(d => d.ChefsId)
-                    .HasConstraintName("FK__Personal__ChefsI__5CD6CB2B");
+                    .HasConstraintName("FK__Personal__ChefsI__398D8EEE");
             });
 
-            modelBuilder.Entity<Product>(entity =>
+            modelBuilder.Entity<Personal1>(entity =>
             {
+                entity.ToTable("Personal", "HR");
+
+                entity.Property(e => e.Id).HasColumnName("ID");
+            });
+
+            modelBuilder.Entity<Sektion1>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.ToView("Sektion1");
+
+                entity.Property(e => e.ChefsId).HasColumnName("ChefsID");
+
                 entity.Property(e => e.Id).HasColumnName("ID");
 
-                entity.Property(e => e.DateChanged2).HasDefaultValueSql("(getutcdate())");
+                entity.Property(e => e.Lön).HasColumnType("money");
 
-                entity.Property(e => e.Price).HasColumnType("money");
-
-                entity.Property(e => e.ProductName)
+                entity.Property(e => e.Namn)
                     .IsRequired()
+                    .HasMaxLength(32)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Titel)
                     .HasMaxLength(32)
                     .IsUnicode(false);
             });
 
-            modelBuilder.Entity<Select>(entity =>
+            modelBuilder.Entity<Sektion2>(entity =>
             {
                 entity.HasNoKey();
 
-                entity.ToTable("Select");
+                entity.ToView("Sektion2");
+
+                entity.Property(e => e.Name)
+                    .IsRequired()
+                    .HasMaxLength(32)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Salary).HasColumnType("money");
+
+                entity.Property(e => e.Title)
+                    .HasMaxLength(32)
+                    .IsUnicode(false);
             });
 
             modelBuilder.Entity<StrangeTable>(entity =>
@@ -288,13 +218,22 @@ namespace EF_Core_Demo_Project.Models.Entities
                 entity.ToTable("Strange Table");
 
                 entity.Property(e => e.Insert)
-                    .HasMaxLength(32)
-                    .IsUnicode(false);
+                    .HasMaxLength(6)
+                    .IsUnicode(false)
+                    .HasComment("SQL_Latin1_General_CP1_CI_AS");
 
                 entity.Property(e => e.Update)
                     .IsRequired()
-                    .HasMaxLength(64)
-                    .IsUnicode(false);
+                    .HasMaxLength(10)
+                    .IsUnicode(false)
+                    .HasComment("SQL_Latin1_General_CP1_CI_AS");
+            });
+
+            modelBuilder.Entity<TestTabell>(entity =>
+            {
+                entity.ToTable("TestTabell", "HR");
+
+                entity.Property(e => e.Id).HasColumnName("ID");
             });
 
             OnModelCreatingPartial(modelBuilder);
