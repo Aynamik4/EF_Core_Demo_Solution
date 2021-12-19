@@ -18,6 +18,7 @@ namespace EF_Core_Demo_Project.Models.Entities
         public string Namn { get; set; }
         public decimal Lön { get; set; }
         public int? ChefsId { get; set; }
+        public string Personnummer { get; set; }
 
         public virtual Personal Chefs { get; set; }
         public virtual ICollection<Personal> InverseChefs { get; set; }

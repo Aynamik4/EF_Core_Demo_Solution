@@ -18,11 +18,13 @@ namespace EF_Core_Demo_Project.Models.Entities
         }
 
         public virtual DbSet<Address> Addresses { get; set; }
+        public virtual DbSet<HistoricalPrice> HistoricalPrices { get; set; }
         public virtual DbSet<Kontaktuppgifter> Kontaktuppgifters { get; set; }
         public virtual DbSet<P2a> P2as { get; set; }
         public virtual DbSet<Person> Persons { get; set; }
         public virtual DbSet<Personal> Personals { get; set; }
         public virtual DbSet<Personal1> Personals1 { get; set; }
+        public virtual DbSet<Product> Products { get; set; }
         public virtual DbSet<Sektion1> Sektion1s { get; set; }
         public virtual DbSet<Sektion2> Sektion2s { get; set; }
         public virtual DbSet<StrangeTable> StrangeTables { get; set; }
@@ -61,6 +63,25 @@ namespace EF_Core_Demo_Project.Models.Entities
                 entity.Property(e => e.ZipCode)
                     .HasMaxLength(16)
                     .IsUnicode(false);
+            });
+
+            modelBuilder.Entity<HistoricalPrice>(entity =>
+            {
+                entity.Property(e => e.Id).HasColumnName("ID");
+
+                entity.Property(e => e.ChangeDate).HasColumnType("datetime");
+
+                entity.Property(e => e.NewPrice).HasColumnType("money");
+
+                entity.Property(e => e.OldPrice).HasColumnType("money");
+
+                entity.Property(e => e.ProductsId).HasColumnName("ProductsID");
+
+                entity.HasOne(d => d.Products)
+                    .WithMany(p => p.HistoricalPrices)
+                    .HasForeignKey(d => d.ProductsId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__Historica__Produ__04E4BC85");
             });
 
             modelBuilder.Entity<Kontaktuppgifter>(entity =>
@@ -154,6 +175,8 @@ namespace EF_Core_Demo_Project.Models.Entities
                     .HasMaxLength(32)
                     .IsUnicode(false);
 
+                entity.Property(e => e.Personnummer).HasMaxLength(13);
+
                 entity.Property(e => e.Titel)
                     .HasMaxLength(32)
                     .IsUnicode(false);
@@ -169,6 +192,18 @@ namespace EF_Core_Demo_Project.Models.Entities
                 entity.ToTable("Personal", "HR");
 
                 entity.Property(e => e.Id).HasColumnName("ID");
+            });
+
+            modelBuilder.Entity<Product>(entity =>
+            {
+                entity.Property(e => e.Id).HasColumnName("ID");
+
+                entity.Property(e => e.Price).HasColumnType("money");
+
+                entity.Property(e => e.ProductName)
+                    .IsRequired()
+                    .HasMaxLength(32)
+                    .IsUnicode(false);
             });
 
             modelBuilder.Entity<Sektion1>(entity =>

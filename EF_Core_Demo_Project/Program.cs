@@ -17,6 +17,7 @@ Scaffold-DbContext "Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=Mercury;I
 using EF_Core_Demo_Project.Models.Entities;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Linq;
 
 namespace EF_Core_Demo_Project
 {
@@ -30,8 +31,8 @@ namespace EF_Core_Demo_Project
             {
                 Console.WriteLine(product);
 
-                foreach (var price in product.HistoricalPrices)
-                    Console.WriteLine($"\t{price.NewPrice}");
+                foreach (var price in product.HistoricalPrices.OrderByDescending(hp => hp.ChangeDate))
+                    Console.WriteLine($"\t{price.OldPrice}");
 
                 Console.WriteLine("----------------------------------------------");
             }
