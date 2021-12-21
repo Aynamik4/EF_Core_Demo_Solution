@@ -1,7 +1,7 @@
 ﻿/*
 1. Core project (Console, MVC, WinForms, WPF)
-2. EF NuGet installation -- Wizard saknas.
-3. EF-Scaffolding - D.v.s. generera Context och Entity klasser istället för wizard.
+2. EF NuGet installation
+3. EF-Scaffolding - D.v.s. generera Context och Entity klasser
 4. Include (Child tables)
 5. Triggers now supported.
 
@@ -36,15 +36,6 @@ namespace EF_Core_Demo_Project
 
                 Console.WriteLine("----------------------------------------------");
             }
-
-            //Product aProduct = mercury.Products.Find(6);
-            //aProduct.Price *= 1.25m;
-            //mercury.SaveChanges();
-
-            //foreach (var hp in mercury.HistoricalPrices.Where(p => p.ProductsId == 6))
-            //{
-            //    Console.WriteLine($"{hp.ProductsId} {hp.NewPrice}");
-            //}
         }
     }
 }
